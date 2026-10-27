@@ -1,0 +1,12 @@
+{
+  "name": "mac-app-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent skill: build, bundle, sign and ship macOS apps with SwiftPM and the Command Line Tools, no Xcode.",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs && zsh test/e2e.sh"
+  }
+}
