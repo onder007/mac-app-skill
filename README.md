@@ -61,7 +61,7 @@ node ../skills/mac-app/scripts/verify-app.mjs App.app
 
 ```bash
 npm test     # unit tests for verify-app, then an end-to-end run:
-             # template -> bundle.sh -> app selftest -> verify-app -> DMG, and a broken bundle that must fail
+             # template -> bundle.sh -> app selftest -> verify-app -> DMG, plus a broken bundle that must fail
 ```
 
 Requires macOS 14+, the Command Line Tools (`xcode-select --install`) and Node 18+.

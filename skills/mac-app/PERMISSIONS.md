@@ -1,6 +1,6 @@
 # Permissions (TCC)
 
-For each protected feature: the API that triggers the prompt, the `Info.plist` usage key that must exist first, the TCC service name for `tccutil reset`, and the hardened runtime entitlement when one is needed.
+For each protected feature: the API that triggers the prompt, the `Info.plist` usage key that must exist first, the TCC service name for `tccutil reset` and the hardened runtime entitlement when one is needed.
 
 | Feature | Triggered by | Info.plist key | `tccutil` service | Hardened runtime entitlement |
 |---|---|---|---|---|

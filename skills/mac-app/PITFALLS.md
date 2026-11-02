@@ -1,6 +1,6 @@
 # Pitfalls
 
-Each entry: the symptom you see, the cause, and the fix. All were hit building a real menu bar app with the Command Line Tools only.
+Each entry: the symptom you see, the cause and the fix. All were hit building a real menu bar app with the Command Line Tools only.
 
 ## 1. SwiftUI macros do not compile without Xcode
 
@@ -49,7 +49,7 @@ Use `// swift-tools-version:5.10` in `Package.swift` unless you are ready for Sw
 
 ## 3. Permissions reset or silently stay denied after a rebuild
 
-**Symptom:** You allowed a permission, rebuilt, and the app is denied again with no prompt, or System Settings no longer lists it.
+**Symptom:** You allowed a permission and rebuilt. Now the app is denied again with no prompt, or System Settings no longer lists it.
 
 **Cause:** TCC stores grants against the app's code requirement. An ad-hoc signature (`codesign -s -`) has no stable identity, so a rebuild can count as a new app.
 
@@ -69,7 +69,7 @@ Use `// swift-tools-version:5.10` in `Package.swift` unless you are ready for Sw
 
 **Cause:** With `LSUIElement` the app is never frontmost on its own.
 
-**Fix:** `NSApp.activate(ignoringOtherApps: true)` before `runModal()` or `makeKeyAndOrderFront`, and give tool windows `window.level = .floating`.
+**Fix:** `NSApp.activate(ignoringOtherApps: true)` before `runModal()` or `makeKeyAndOrderFront`. Give tool windows `window.level = .floating`.
 
 ## 6. A borderless panel ignores the keyboard
 
@@ -109,7 +109,7 @@ Timer.scheduledTimer(withTimeInterval: 1.0 / 30, repeats: true) { _ in
 }
 ```
 
-Make the drop target a plain `NSView` with `registerForDraggedTypes([.fileURL])`, and call `unregisterDraggedTypes()` on any `NSHostingView` above it, or SwiftUI swallows the drop.
+Make the drop target a plain `NSView` with `registerForDraggedTypes([.fileURL])`. Call `unregisterDraggedTypes()` on any `NSHostingView` above it, or SwiftUI swallows the drop.
 
 ## 9. Reading the Finder selection
 
@@ -177,7 +177,7 @@ Same pattern for camera (`com.apple.security.device.camera`) and microphone (`co
 
 ## 14. Glass looks wrong under the other system theme
 
-`NSVisualEffectView` follows the system appearance. Pin it: `window.appearance = NSAppearance(named: .aqua)` (or `.darkAqua`), and put a tint layer over the material so text stays readable on any wallpaper.
+`NSVisualEffectView` follows the system appearance. Pin it with `window.appearance = NSAppearance(named: .aqua)` (or `.darkAqua`). Put a tint layer over the material so text stays readable on any wallpaper.
 
 ## 15. Semi-transparent shapes show a darker outline
 
