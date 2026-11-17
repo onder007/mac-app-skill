@@ -11,13 +11,16 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
-/** Frameworks that need a usage string as soon as their protected API is called. */
+/** Frameworks that need a usage string as soon as their protected API is called,
+ *  and the entitlement they need under the hardened runtime. Apple documents the calendars
+ *  entitlement for calendar access only, so EventKit needs it only with a calendar usage string. */
 const FRAMEWORK_KEYS = {
   Speech: { anyOf: ["NSSpeechRecognitionUsageDescription"], what: "speech recognition" },
-  Contacts: { anyOf: ["NSContactsUsageDescription"], what: "contacts" },
-  EventKit: { anyOf: ["NSCalendarsFullAccessUsageDescription", "NSRemindersFullAccessUsageDescription"], what: "calendars or reminders" },
-  Photos: { anyOf: ["NSPhotoLibraryUsageDescription"], what: "the photo library" },
-  CoreLocation: { anyOf: ["NSLocationUsageDescription"], what: "location" },
+  Contacts: { anyOf: ["NSContactsUsageDescription"], what: "contacts", entitlement: "com.apple.security.personal-information.addressbook" },
+  EventKit: { anyOf: ["NSCalendarsFullAccessUsageDescription", "NSRemindersFullAccessUsageDescription"], what: "calendars or reminders", entitlement: "com.apple.security.personal-information.calendars",
+    entitlementWith: ["NSCalendarsFullAccessUsageDescription", "NSCalendarsWriteOnlyAccessUsageDescription"] },
+  Photos: { anyOf: ["NSPhotoLibraryUsageDescription"], what: "the photo library", entitlement: "com.apple.security.personal-information.photos-library" },
+  CoreLocation: { anyOf: ["NSLocationUsageDescription"], what: "location", entitlement: "com.apple.security.personal-information.location" },
 };
 
 /** Strings that appear in a binary that calls these APIs (class or symbol names). */
@@ -74,6 +77,9 @@ export function analyze(f) {
     if (usesAppleEvents) need.push("com.apple.security.automation.apple-events");
     if (usesCapture && p.NSCameraUsageDescription) need.push("com.apple.security.device.camera");
     if (usesCapture && p.NSMicrophoneUsageDescription) need.push("com.apple.security.device.audio-input");
+    for (const k of f.frameworks.map((fw) => FRAMEWORK_KEYS[fw])) {
+      if (k?.entitlement && (!k.entitlementWith || k.entitlementWith.some((u) => p[u]))) need.push(k.entitlement);
+    }
     for (const e of need.filter((e) => !f.entitlements.includes(e))) {
       out.push(finding(`entitlement-${e}`, "error", `Hardened runtime is on but ${e} is missing; the API fails without a prompt.`,
         `Add <key>${e}</key><true/> to the entitlements file and pass --entitlements to bundle.sh.`));

@@ -8,11 +8,11 @@ For each protected feature: the API that triggers the prompt, the `Info.plist` u
 | Speech recognition | `SFSpeechRecognizer.requestAuthorization` | `NSSpeechRecognitionUsageDescription` | `SpeechRecognition` | |
 | Microphone | `AVCaptureDevice` audio, `AVAudioEngine` input | `NSMicrophoneUsageDescription` | `Microphone` | `com.apple.security.device.audio-input` |
 | Camera | `AVCaptureDevice` video | `NSCameraUsageDescription` | `Camera` | `com.apple.security.device.camera` |
-| Contacts | `CNContactStore` | `NSContactsUsageDescription` | `AddressBook` | |
-| Calendars | `EKEventStore.requestFullAccessToEvents` | `NSCalendarsFullAccessUsageDescription` | `Calendar` | |
-| Reminders | `EKEventStore.requestFullAccessToReminders` | `NSRemindersFullAccessUsageDescription` | `Reminders` | |
-| Photos | `PHPhotoLibrary.requestAuthorization` | `NSPhotoLibraryUsageDescription` | `Photos` | |
-| Location | `CLLocationManager` | `NSLocationUsageDescription` | (System Settings → Location Services) | |
+| Contacts | `CNContactStore` | `NSContactsUsageDescription` | `AddressBook` | `com.apple.security.personal-information.addressbook` |
+| Calendars | `EKEventStore.requestFullAccessToEvents` | `NSCalendarsFullAccessUsageDescription` | `Calendar` | `com.apple.security.personal-information.calendars` |
+| Reminders | `EKEventStore.requestFullAccessToReminders` | `NSRemindersFullAccessUsageDescription` | `Reminders` | none documented |
+| Photos | `PHPhotoLibrary.requestAuthorization` | `NSPhotoLibraryUsageDescription` | `Photos` | `com.apple.security.personal-information.photos-library` |
+| Location | `CLLocationManager` | `NSLocationUsageDescription` | (System Settings → Location Services) | `com.apple.security.personal-information.location` |
 | Desktop / Documents / Downloads folders | First file access there | `NSDesktopFolderUsageDescription`, `NSDocumentsFolderUsageDescription`, `NSDownloadsFolderUsageDescription` | `SystemPolicyDesktopFolder`, `SystemPolicyDocumentsFolder`, `SystemPolicyDownloadsFolder` | |
 | Screen recording | `ScreenCaptureKit`, `CGWindowListCreateImage` | none | `ScreenCapture` | |
 | Accessibility | `AXIsProcessTrustedWithOptions`, `CGEvent.post` | none | `Accessibility` | |

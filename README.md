@@ -39,7 +39,7 @@ node skills/mac-app/scripts/verify-app.mjs MyApp.app --json   # {"app": ..., "fi
 | The executable exists and is executable | error |
 | Linked Speech, Contacts, EventKit, Photos or CoreLocation without its usage string (the app quits at the request) | error |
 | `NSAppleScript` in the binary without `NSAppleEventsUsageDescription` | error |
-| Hardened runtime without the entitlement an API needs (Apple Events, camera, microphone) | error |
+| Hardened runtime without the entitlement an API needs (Apple Events, camera, microphone, contacts, calendars, photos, location) | error |
 | Unsigned, or the signature no longer verifies | error |
 | `AVCaptureDevice` without a camera or microphone usage string | warn |
 | No `LSMinimumSystemVersion` | warn |

@@ -55,6 +55,30 @@ test("hardened runtime needs the apple-events entitlement", () => {
   assert.deepEqual(errors(f), []);
 });
 
+test("hardened runtime needs the entitlement of each linked protected framework", () => {
+  const f = { ...base(), frameworks: ["Contacts", "EventKit", "Photos", "CoreLocation"] };
+  Object.assign(f.plist, {
+    NSContactsUsageDescription: "a", NSCalendarsFullAccessUsageDescription: "b",
+    NSPhotoLibraryUsageDescription: "c", NSLocationUsageDescription: "d",
+  });
+  assert.deepEqual(errors(f), []);
+  f.sign.runtime = true;
+  const ents = [
+    "com.apple.security.personal-information.addressbook",
+    "com.apple.security.personal-information.calendars",
+    "com.apple.security.personal-information.photos-library",
+    "com.apple.security.personal-information.location",
+  ];
+  assert.deepEqual(errors(f), ents.map((e) => `entitlement-${e}`));
+  f.entitlements = ents;
+  assert.deepEqual(errors(f), []);
+
+  const reminders = { ...base(), frameworks: ["EventKit"] };
+  reminders.plist.NSRemindersFullAccessUsageDescription = "e";
+  reminders.sign.runtime = true;
+  assert.deepEqual(errors(reminders), []);
+});
+
 test("camera and microphone entitlements follow the usage strings", () => {
   const f = { ...base(), markers: ["AVCaptureDevice"] };
   assert.deepEqual(ids(f), ["usage-capture"]);

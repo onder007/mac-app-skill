@@ -167,7 +167,7 @@ With `codesign --options runtime` (required for notarization), `NSAppleScript` f
 <key>com.apple.security.automation.apple-events</key><true/>
 ```
 
-Same pattern for camera (`com.apple.security.device.camera`) and microphone (`com.apple.security.device.audio-input`).
+Same pattern for camera (`com.apple.security.device.camera`), microphone (`com.apple.security.device.audio-input`), contacts (`com.apple.security.personal-information.addressbook`), calendars (`com.apple.security.personal-information.calendars`), photos (`com.apple.security.personal-information.photos-library`) and location (`com.apple.security.personal-information.location`). Apple documents no entitlement for reminders.
 
 ## 13. A child process hangs forever
 
