@@ -2,7 +2,7 @@
 
 An agent skill for building macOS apps from the terminal: SwiftPM and the Command Line Tools only, no Xcode project. It covers the parts that break after `swift build` works: bundling, permissions, signing and release.
 
-Works with any coding agent that reads `SKILL.md` skills.
+A `SKILL.md` skill that installs with `npx skills add`.
 
 ## Install
 
@@ -47,6 +47,19 @@ node skills/mac-app/scripts/verify-app.mjs MyApp.app --json   # {"app": ..., "fi
 | Developer ID without a stapled notarization ticket | info |
 
 Frameworks come from `otool -L`; API use is detected from class and symbol names in the binary.
+
+Output for the template app with `CFBundleIdentifier` removed from its `Info.plist` (exit 1):
+
+```
+ERROR plist-CFBundleIdentifier: Info.plist has no CFBundleIdentifier.
+      fix: plutil -insert CFBundleIdentifier -string ... Contents/Info.plist
+WARN  adhoc: Ad-hoc signature: permissions may reset on every rebuild. Other Macs need System Settings > Privacy & Security > Open Anyway, or xattr -dr com.apple.quarantine.
+      fix: Sign with a stable identity (PITFALLS.md section 3), or Developer ID + notarization for distribution (RELEASE.md).
+
+1 error(s)
+```
+
+`/System/Applications/Calculator.app` reports `OK` (exit 0).
 
 ## Quick start
 
