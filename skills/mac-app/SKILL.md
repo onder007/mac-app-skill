@@ -1,6 +1,7 @@
 ---
 name: mac-app
 description: Build, bundle, sign and ship a macOS app with SwiftPM and the Command Line Tools only, no Xcode project. Use when creating a menu bar or desktop Mac app from the terminal, turning a Swift package into a .app, fixing macOS permission (TCC) prompts that never appear or keep resetting, adding a login item, or preparing a DMG, notarized build or Homebrew release.
+license: MIT
 ---
 
 # mac-app
