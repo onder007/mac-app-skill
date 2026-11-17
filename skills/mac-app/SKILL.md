@@ -5,7 +5,7 @@ description: Build, bundle, sign and ship a macOS app with SwiftPM and the Comma
 
 # mac-app
 
-Ship a real `.app` from a Swift package without opening Xcode. The Command Line Tools include `swift`, `codesign`, `notarytool`, `stapler`, `hdiutil` and `iconutil`, which is everything this needs.
+Ship a real `.app` from a Swift package without opening Xcode. The Command Line Tools bring `swift`, `notarytool` and `stapler`. `codesign`, `hdiutil` and `iconutil` ship with macOS in `/usr/bin`. That is everything this needs.
 
 ## Workflow
 
