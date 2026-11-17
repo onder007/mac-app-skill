@@ -18,6 +18,11 @@ For each protected feature: the API that triggers the prompt, the `Info.plist` u
 | Accessibility | `AXIsProcessTrustedWithOptions`, `CGEvent.post` | none | `Accessibility` | |
 | Input Monitoring | key events from other apps, listen-only event taps | none | `ListenEvent` | |
 | Full Disk Access | none, the user adds the app by hand | none | `SystemPolicyAllFiles` | |
+| Bluetooth | Core Bluetooth | `NSBluetoothAlwaysUsageDescription` | `BluetoothAlways` | |
+| Local network | Bonjour, connections to hosts on the local network | `NSLocalNetworkUsageDescription` | none | |
+| Removable volumes | First file access there not opened by the user (Open panel, drag, Finder) | `NSRemovableVolumesUsageDescription` | `SystemPolicyRemovableVolumes` | |
+| Network volumes | First file access there not opened by the user (Open panel, drag, Finder) | `NSNetworkVolumesUsageDescription` | `SystemPolicyNetworkVolumes` | |
+| Media library | First access to the user's media library (key required from the macOS 15 SDK) | `NSAppleMusicUsageDescription` | `MediaLibrary` | |
 
 ## Rules
 
