@@ -6,14 +6,15 @@
 #   --icon <file.icns>         app icon
 #   --usage <Key> <text>       a usage string, e.g. --usage NSSpeechRecognitionUsageDescription "..."
 #   --entitlements <file>      entitlements plist for codesign
-#   --min-os <version>         LSMinimumSystemVersion (default 14.0)
+#   --min-os <version>         LSMinimumSystemVersion (default 14.0); match the platforms line of Package.swift
 # Env:
 #   SIGN_ID   codesign identity (default "-", ad-hoc)
 #   HARDENED  1 to sign with the hardened runtime (needed for notarization)
 # Run from the package root. Writes ./<product>.app
 set -euo pipefail
 
-if [[ $# -lt 2 ]]; then sed -n '2,15p' "$0"; exit 2; fi
+usage() { [[ -n ${1:-} ]] && echo "$1" >&2; sed -n '2,13p' "$ZSH_ARGZERO" >&2; exit 2; }
+if [[ $# -lt 2 ]]; then usage; fi
 product=$1 bundle_id=$2; shift 2
 version=1.0.0
 if [[ $# -gt 0 && $1 != --* ]]; then version=$1; shift; fi
@@ -23,10 +24,10 @@ typeset -a usage_keys usage_texts
 while [[ $# -gt 0 ]]; do
   case $1 in
     --menu-bar) menu_bar=1; shift ;;
-    --icon) icon=$2; shift 2 ;;
-    --usage) usage_keys+=$2; usage_texts+=$3; shift 3 ;;
-    --entitlements) entitlements=$2; shift 2 ;;
-    --min-os) min_os=$2; shift 2 ;;
+    --icon) (( $# >= 2 )) || usage "--icon needs a value"; icon=$2; shift 2 ;;
+    --usage) (( $# >= 3 )) || usage "--usage needs <Key> <text>"; usage_keys+=$2; usage_texts+=$3; shift 3 ;;
+    --entitlements) (( $# >= 2 )) || usage "--entitlements needs a value"; entitlements=$2; shift 2 ;;
+    --min-os) (( $# >= 2 )) || usage "--min-os needs a value"; min_os=$2; shift 2 ;;
     *) echo "unknown option: $1" >&2; exit 2 ;;
   esac
 done
