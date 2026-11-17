@@ -4,7 +4,7 @@
 
 | Level | Who can run it | Needs |
 |---|---|---|
-| Ad-hoc (`codesign -s -`) | You; others after right click → Open, or `xattr -dr com.apple.quarantine` | Nothing |
+| Ad-hoc (`codesign -s -`) | You; others after System Settings → Privacy & Security → Open Anyway, or `xattr -dr com.apple.quarantine` | Nothing |
 | Self-signed identity | Same as ad-hoc for others; for you, permissions survive rebuilds | A code signing cert in your keychain |
 | Developer ID + notarized | Everyone, double click opens | Apple Developer Program |
 

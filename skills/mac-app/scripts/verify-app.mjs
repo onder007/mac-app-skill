@@ -92,7 +92,7 @@ export function analyze(f) {
   } else {
     if (!f.sign.valid) out.push(finding("signature-invalid", "error", "codesign --verify --deep --strict fails: the bundle changed after signing.", "Sign again as the last step."));
     if (f.sign.adhoc) {
-      out.push(finding("adhoc", "warn", "Ad-hoc signature: permissions may reset on every rebuild, and other Macs need right click > Open.",
+      out.push(finding("adhoc", "warn", "Ad-hoc signature: permissions may reset on every rebuild. Other Macs need System Settings > Privacy & Security > Open Anyway, or xattr -dr com.apple.quarantine.",
         "Sign with a stable identity (PITFALLS.md section 3), or Developer ID + notarization for distribution (RELEASE.md)."));
     } else if (f.sign.authority.some((a) => a.startsWith("Developer ID Application")) && !f.notarized) {
       out.push(finding("not-notarized", "info", "Signed with Developer ID but no notarization ticket is stapled.", "xcrun notarytool submit ... --wait, then xcrun stapler staple App.app"));
