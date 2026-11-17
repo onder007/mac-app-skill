@@ -31,6 +31,8 @@ Hardened runtime is required for notarization; add the entitlements from PERMISS
 scripts/make-dmg.sh App.app App-1.0.0.dmg
 ```
 
+`bundle.sh` builds for the host architecture only. A build made on Apple silicon holds only arm64 code and does not run on an Intel Mac; check with `lipo -archs App.app/Contents/MacOS/App`.
+
 On macOS 27 `hdiutil` prints a deprecation notice pointing to `diskutil image`; the DMG it builds is still valid and mounts on older systems.
 
 Sign and notarize the DMG too when the app is notarized (`codesign -s "$SIGN_ID" App-1.0.0.dmg`, then `notarytool submit` and `stapler staple`).
