@@ -88,7 +88,7 @@ export function analyze(f) {
 
   // Signature.
   if (!f.sign.signed) {
-    out.push(finding("unsigned", "error", "The bundle is not signed. Apple Silicon refuses to run unsigned code.", "codesign --force --sign - App.app"));
+    out.push(finding("unsigned", "error", "The bundle is not signed; at most the executable carries the linker's ad-hoc signature, which does not cover Info.plist or resources.", "codesign --force --sign - App.app"));
   } else {
     if (!f.sign.valid) out.push(finding("signature-invalid", "error", "codesign --verify --deep --strict fails: the bundle changed after signing.", "Sign again as the last step."));
     if (f.sign.adhoc) {
@@ -99,6 +99,20 @@ export function analyze(f) {
     }
   }
   return out;
+}
+
+/**
+ * Signature facts from `codesign -dv` output. A bundle carrying only the linker's ad-hoc
+ * signature on its arm64 executable (flags "linker-signed") was not signed as a bundle.
+ */
+export function parseSignature(text, status) {
+  const flags = (text.match(/flags=0x[0-9a-f]+\(([^)]*)\)/) || [])[1] || "";
+  return {
+    signed: status === 0 && !/not signed/i.test(text) && !flags.includes("linker-signed"),
+    adhoc: /Signature=adhoc/.test(text) || flags.includes("adhoc"),
+    runtime: flags.includes("runtime"),
+    authority: [...text.matchAll(/^Authority=(.+)$/gm)].map((m) => m[1]),
+  };
 }
 
 /** Gathers the facts analyze() needs from a real bundle. */
@@ -121,16 +135,9 @@ export function collect(app) {
   }
 
   const info = spawnSync("codesign", ["-dv", "--verbose=2", app], { encoding: "utf8" });
-  const text = (info.stderr || "") + (info.stdout || "");
-  const signed = info.status === 0 && !/not signed/i.test(text);
-  const flags = (text.match(/flags=0x[0-9a-f]+\(([^)]*)\)/) || [])[1] || "";
-  const sign = {
-    signed,
-    adhoc: /Signature=adhoc/.test(text) || flags.includes("adhoc"),
-    runtime: flags.includes("runtime"),
-    authority: [...text.matchAll(/^Authority=(.+)$/gm)].map((m) => m[1]),
-    valid: signed && spawnSync("codesign", ["--verify", "--deep", "--strict", app]).status === 0,
-  };
+  const sign = parseSignature((info.stderr || "") + (info.stdout || ""), info.status);
+  const signed = sign.signed;
+  sign.valid = signed && spawnSync("codesign", ["--verify", "--deep", "--strict", app]).status === 0;
   const ent = signed ? spawnSync("codesign", ["-d", "--entitlements", "-", "--xml", app], { encoding: "utf8" }).stdout || "" : "";
   const entitlements = [...ent.matchAll(/<key>([^<]+)<\/key>/g)].map((m) => m[1]);
   const notarized = signed && spawnSync("xcrun", ["stapler", "validate", app]).status === 0;

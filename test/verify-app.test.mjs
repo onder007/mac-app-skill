@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { analyze } from "../skills/mac-app/scripts/verify-app.mjs";
+import { analyze, parseSignature } from "../skills/mac-app/scripts/verify-app.mjs";
 
 const base = () => ({
   plist: { CFBundleIdentifier: "com.example.app", CFBundleExecutable: "App", CFBundlePackageType: "APPL", LSMinimumSystemVersion: "14.0" },
@@ -94,4 +94,12 @@ test("signature states", () => {
   const devId = { ...base(), sign: { ...base().sign, authority: ["Developer ID Application: Me (TEAMID)"] } };
   assert.deepEqual(ids(devId), ["not-notarized"]);
   assert.deepEqual(ids({ ...devId, notarized: true }), []);
+});
+
+test("a linker-only signature counts as unsigned", () => {
+  const linker = "Format=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=924 flags=0x20002(adhoc,linker-signed) hashes=26+0 location=embedded\nSignature=adhoc\nSealed Resources=none\n";
+  assert.equal(parseSignature(linker, 0).signed, false);
+  assert.deepEqual(errors({ ...base(), sign: { ...parseSignature(linker, 0), valid: false } }), ["unsigned"]);
+  const bundle = "CodeDirectory v=20500 size=430 flags=0x10002(adhoc,runtime) hashes=7+3 location=embedded\nSignature=adhoc\n";
+  assert.deepEqual(parseSignature(bundle, 0), { signed: true, adhoc: true, runtime: true, authority: [] });
 });
