@@ -10,7 +10,7 @@ Ship a real `.app` from a Swift package without opening Xcode. The Command Line 
 ## Workflow
 
 1. **Scaffold** a package and the app shell. Read [SCAFFOLD.md](SCAFFOLD.md). Start from `templates/menubar/` for a menu bar app.
-2. **Before writing SwiftUI**, read [PITFALLS.md](PITFALLS.md) section 1. Without Xcode, `@State`, `@Observable`, `@Entry` and `#Preview` do not compile.
+2. **Before writing SwiftUI**, read [PITFALLS.md](PITFALLS.md) section 1. Without Xcode, `@State`, `@Entry` and `#Preview` do not compile.
 3. **Bundle** with `scripts/bundle.sh`. It builds in release mode, writes `Info.plist`, copies the binary and signs the bundle.
 4. **Permissions:** for every protected API the app calls, add its usage string and know its TCC service. Read [PERMISSIONS.md](PERMISSIONS.md).
 5. **Verify** with `node scripts/verify-app.mjs <App.app>`. Fix every `error` before going further. Read the `warn` lines; each one says why it matters.

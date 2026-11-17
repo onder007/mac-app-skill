@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 // A menu bar app with a SwiftUI popover, written without SwiftUI macros
-// (@State / @Observable need Xcode's macro plugin; see PITFALLS.md section 1).
+// (@State needs Xcode's macro plugin; see PITFALLS.md section 1).
 
 @MainActor
 final class CounterModel: ObservableObject {

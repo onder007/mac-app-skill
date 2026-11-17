@@ -11,7 +11,7 @@ error: external macro implementation type 'SwiftUIMacros.StateMacro' could not b
 plugin for module 'SwiftUIMacros' not found
 ```
 
-**Cause:** In current SDKs `@State`, `@Observable`, `@Entry` and `#Preview` are macros. Their compiler plugin ships inside Xcode, not with the Command Line Tools.
+**Cause:** In current SDKs `@State`, `@Entry` and `#Preview` are macros. Their compiler plugins (`SwiftUIMacros`, `PreviewsMacros`) ship inside Xcode, not with the Command Line Tools. `@Observable` is not affected: its plugin ships with the Command Line Tools and it compiled there with Swift 6.4.
 
 **Fix:** Keep view state in an `ObservableObject` and observe it.
 

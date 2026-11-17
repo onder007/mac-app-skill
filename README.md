@@ -17,7 +17,7 @@ Or copy `skills/mac-app/` into your agent's skills folder.
 | File | Contents |
 |---|---|
 | [`SKILL.md`](skills/mac-app/SKILL.md) | Workflow and rules: scaffold, bundle, permissions, verify, release |
-| [`PITFALLS.md`](skills/mac-app/PITFALLS.md) | 15 problems with symptom, cause and fix, e.g. `@State` and `@Observable` failing to compile without Xcode, permissions resetting after a rebuild, AppleScript error -1743 vs -1700, panels opening off screen |
+| [`PITFALLS.md`](skills/mac-app/PITFALLS.md) | 15 problems with symptom, cause and fix, e.g. `@State` failing to compile without Xcode, permissions resetting after a rebuild, AppleScript error -1743 vs -1700, panels opening off screen |
 | [`PERMISSIONS.md`](skills/mac-app/PERMISSIONS.md) | Every protected feature: the API that prompts, its `Info.plist` key, its `tccutil` service, its hardened runtime entitlement |
 | [`SCAFFOLD.md`](skills/mac-app/SCAFFOLD.md) | `Package.swift`, an AppKit-hosted `main.swift`, icons, developer flags that make an app testable without clicking |
 | [`RELEASE.md`](skills/mac-app/RELEASE.md) | Signing levels, notarization with `notarytool`, DMG, GitHub release, Homebrew tap |
